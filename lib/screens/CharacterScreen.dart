@@ -1,3 +1,4 @@
+import 'package:despicableme/model/character.dart';
 import 'package:despicableme/ui/CharacterWidget.dart';
 import 'package:despicableme/ui/styleguide.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,21 @@ class CharacterScreen extends StatefulWidget {
 }
 
 class _CharacterScreenState extends State<CharacterScreen> {
+  PageController _pageController ;
+  int currentPage = 0;
+
+  @override
+  void initState(){
+    super.initState();
+
+    _pageController = PageController(
+      viewportFraction: 1.0,
+      initialPage: currentPage,
+      keepPage: false,
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +53,15 @@ class _CharacterScreenState extends State<CharacterScreen> {
                     )
                 ),
               ),
-              Expanded(child: CharacterWidget()),
+              Expanded(child: PageView(
+                controller: _pageController,
+              children: <Widget>[
+                for(var i = 0; i<characters.length; i++)
+                  CharacterWidget(character: characters[i], pageController: _pageController, currentPage: i)
+              ],
+
+              )
+              ),
 
             ],
           ),
